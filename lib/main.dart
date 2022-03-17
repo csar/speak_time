@@ -132,7 +132,11 @@ class MyHomePage extends StatelessWidget {
                                             child: InkWell(
                                               child: Draggable(
                                                 child: icon,
-                                                feedback: icon,
+                                                feedback: Container(
+                                            width: bubbleSize,
+                                            height: bubbleSize,decoration: BoxDecoration(
+                                                    shape: (speaker.round) ? BoxShape.circle : BoxShape.rectangle,
+                                                    color: speaker.color)),
                                                 data: speaker,
 
                                                 // onDragEnd: (d) => m.moveTo(e, d)
@@ -195,15 +199,17 @@ void showDialogWithFields(BuildContext context, Speaker s) async {
     context: context,
     builder: (context) {
 
-      var emailController = TextEditingController();
-      emailController.text = s.id;
+      var idController = TextEditingController();
+      idController.text = s.id;
       var color = s.color;
       var round = s.round;
 
-      var messageController = TextEditingController();
-      messageController.text=s.name;
+      var nameController = TextEditingController();
+      nameController.text=s.name;
+      var infoController = TextEditingController();
+      infoController.text=s.info;
       return StatefulBuilder(builder: (context, setState) => AlertDialog(
-        title: Text('Speaker'),
+        title: SwitchListTile(title:Text("Round"), value: round, onChanged: (v)=> setState(()=>round=v),),
         content: SizedBox(
           //height: double.maxFinite,
           width: 200,
@@ -211,16 +217,19 @@ void showDialogWithFields(BuildContext context, Speaker s) async {
             shrinkWrap: true,
             children: [
               TextFormField(
-                controller: emailController,
+                controller: idController,
                 maxLength: 3,
                 expands: false,
                 decoration: InputDecoration(hintText: 'Initial'),
               ),
               TextFormField(
-                controller: messageController,
+                controller: nameController,
                 decoration: InputDecoration(hintText: 'Name'),
               ),
-              SwitchListTile(title:Text("Round"), value: round, onChanged: (v)=> setState(()=>round=v),),
+              TextFormField(
+                controller: infoController,
+                decoration: InputDecoration(hintText: 'Info'),
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -262,9 +271,10 @@ void showDialogWithFields(BuildContext context, Speaker s) async {
           TextButton(
             onPressed: () {
               // Send them to your email maybe?
-              s.id = emailController.text;
+              s.id = idController.text;
               s.color = color;
-              s.name = messageController.text;
+              s.name = nameController.text;
+              s.info = infoController.text;
               s.round = round;
               Navigator.pop(context);
             },

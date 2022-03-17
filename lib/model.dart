@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:random_string/random_string.dart';
+import 'package:speak_time/main.dart';
 import 'package:speak_time/web.dart';
 
 class Clock extends ChangeNotifier {
@@ -71,7 +72,7 @@ class Model extends ChangeNotifier {
 
 
   add() {
-    var nw = Speaker(details!.localPosition.dx,details!.localPosition.dy);
+    var nw = Speaker(details!.localPosition.dx-bubbleSize/2,details!.localPosition.dy-bubbleSize/2);
     icons.add(nw);
     notifyListeners();
   }
@@ -109,10 +110,13 @@ class Model extends ChangeNotifier {
   }
   move(DragTargetDetails dtd) {
     Speaker sp = dtd.data;
-    print(dragstart);
+    final sx = sp.x-dragstart!.dx;
+    final sy = sp.y-dragstart!.dy;
+    print(sx);
+    print(sy);
     print(dtd.offset);
-    sp.x += dtd.offset.dx-dragstart!.dx;
-    sp.y += dtd.offset.dy-dragstart!.dy;
+    sp.x = dtd.offset.dx;//-sx;
+    sp.y = dtd.offset.dy;//-sy;
     notifyListeners();
 
   }
@@ -132,11 +136,11 @@ class Model extends ChangeNotifier {
   }
 
   save()  async {
-    var data = "Speaker,Name,Start,Duration\n";
+    var data = "Speaker,Name,Info,Start,Duration,Round\n";
 
     for (var s in icons) {
       for ( var p in s.parts) {
-        data += '${s.id},${s.name},${DateTime.fromMillisecondsSinceEpoch( p.from).toIso8601String()},${p.duration}\n';
+        data += '${s.id},${s.name},${s.info},${DateTime.fromMillisecondsSinceEpoch( p.from).toIso8601String()},${p.duration},${s.round}\n';
       }
     }
 
@@ -165,6 +169,7 @@ int? started;
 
   Color  color = Colors.blue;
   String name="";
+  String info="";
   bool round=true;
 
 start() {
