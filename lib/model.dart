@@ -157,7 +157,7 @@ class Model extends ChangeNotifier {
 
 
 class Speaker {
-  var id = randomAlpha(2);
+  var id = randomAlpha(3).toUpperCase();
 double x;
 double y;
 Speaker(this.x,this.y);

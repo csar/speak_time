@@ -91,51 +91,64 @@ class MyHomePage extends StatelessWidget {
                                     decoration:
                                         BoxDecoration(color: Colors.grey),
                                     child: Stack(
-                                      children: m.icons
-                                          .map((speaker)  {
-                                            final icon = Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(60),
-                                                    boxShadow: (speaker.started == null
-                                                        ? []
-                                                        : [
-                                                      const BoxShadow(
-                                                        color: Color(0xffff0000),
-                                                        blurRadius: 20.0,
-                                                        spreadRadius: 0.0,
-                                                        // offset: Offset(
-                                                        //   0.0,
-                                                        //   3.0,
-                                                        // ),
-                                                      ),
-                                                    ])),
-                                                child: Container(width: 40,height: 40, child: Center(child:Text(speaker.id,style: TextStyle(fontWeight: FontWeight.bold), )),decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: speaker.color),)
-                                            );
-                                            return Positioned(
-                                              left: speaker.x,
-                                              top: speaker.y,
-                                              child: InkWell(
-                                                                child:
-                                                                    Draggable(
-                                                                  child: icon,
-                                                                  feedback: icon,
-                                                                  data: speaker,
+                                      children: m.icons.map((speaker) {
+                                        final icon = Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(60),
+                                                boxShadow: (speaker.started ==
+                                                        null
+                                                    ? []
+                                                    : [
+                                                        const BoxShadow(
+                                                          color:
+                                                              Color(0xffff0000),
+                                                          blurRadius: 20.0,
+                                                          spreadRadius: 0.0,
+                                                          // offset: Offset(
+                                                          //   0.0,
+                                                          //   3.0,
+                                                          // ),
+                                                        ),
+                                                      ])),
+                                            child: Container(
+                                              width: bubbleSize,
+                                              height: bubbleSize,
+                                              child: Center(
+                                                  child: Text(
+                                                speaker.id,
+                                                style: const TextStyle(
+                                                    color: Colors.black54,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: speaker.color),
+                                            ));
+                                        return Positioned(
+                                            left: speaker.x,
+                                            top: speaker.y,
+                                            child: InkWell(
+                                              child: Draggable(
+                                                child: icon,
+                                                feedback: icon,
+                                                data: speaker,
 
-                                                                  // onDragEnd: (d) => m.moveTo(e, d)
-                                                                ),
-                                                                onDoubleTap: () => showDialogWithFields(context,speaker),
-                                                                onTap: () {
-                                                                  print("TAP");
-                                                                  print(speaker
-                                                                      .started);
-                                                                  clock
-                                                                      .toggleTime();
-                                                                  if(m.start(speaker)) clock.toggleTime();
-                                                                },
-                                                              ));})
-                                          .toList(),
+                                                // onDragEnd: (d) => m.moveTo(e, d)
+                                              ),
+                                              onDoubleTap: () =>
+                                                  showDialogWithFields(
+                                                      context, speaker),
+                                              onTap: () {
+                                                print("TAP");
+                                                print(speaker.started);
+                                                clock.toggleTime();
+                                                if (m.start(speaker))
+                                                  clock.toggleTime();
+                                              },
+                                            ));
+                                      }).toList(),
                                     ),
                                   ),
                               onWillAccept: (_) => true,
@@ -167,19 +180,22 @@ class MyHomePage extends StatelessWidget {
           builder: (c, m, _) => FloatingActionButton(
                 onPressed: m.save,
                 tooltip: 'Increment',
-                child: const Icon(Icons.save_alt,),
+                child: const Icon(
+                  Icons.save_alt,
+                ),
               )), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
 
+const bubbleSize = 60.0;
 
-void showDialogWithFields( BuildContext context, Speaker s) async {
+void showDialogWithFields(BuildContext context, Speaker s) async {
   return showDialog(
     context: context,
     builder: (_) {
       var emailController = TextEditingController();
-      emailController.text=s.id;
+      emailController.text = s.id;
       var color = s.color;
       var messageController = TextEditingController();
       return AlertDialog(
@@ -187,42 +203,47 @@ void showDialogWithFields( BuildContext context, Speaker s) async {
         content: SizedBox(
           //height: double.maxFinite,
           width: 200,
-          child : ListView(
+          child: ListView(
             shrinkWrap: true,
             children: [
               TextFormField(
-
                 controller: emailController,
-                maxLength: 2,expands: false,
+                maxLength: 2,
+                expands: false,
                 decoration: InputDecoration(hintText: 'Initial'),
               ),
               TextFormField(
                 controller: messageController,
                 decoration: InputDecoration(hintText: 'Name'),
               ),
-              SizedBox(height:20,),
-              BlockPicker(pickerColor: color, onColorChanged: (c) => color=c, availableColors: const [
-                Colors.red,
-                Colors.pink,
-                Colors.purple,
-                Colors.deepPurple,
-                Colors.indigo,
-                Colors.blue,
-                // Colors.lightBlue,
-                Colors.cyan,
-                Colors.teal,
-                Colors.green,
-                // Colors.lightGreen,
-                Colors.lime,
-                Colors.yellow,
-                Colors.amber,
-                Colors.orange,
-                Colors.deepOrange,
-                Colors.brown,
-                // Colors.grey,
-                Colors.blueGrey,
-                // Colors.black,
-              ],
+              SizedBox(
+                height: 20,
+              ),
+              BlockPicker(
+                pickerColor: color,
+                onColorChanged: (c) => color = c,
+                availableColors: const [
+                  Colors.red,
+                  Colors.pink,
+                  Colors.purple,
+                  Colors.deepPurple,
+                  Colors.indigo,
+                  Colors.blue,
+                  // Colors.lightBlue,
+                  Colors.cyan,
+                  Colors.teal,
+                  Colors.green,
+                  // Colors.lightGreen,
+                  Colors.lime,
+                  Colors.yellow,
+                  Colors.amber,
+                  Colors.orange,
+                  Colors.deepOrange,
+                  Colors.brown,
+                  // Colors.grey,
+                  Colors.blueGrey,
+                  // Colors.black,
+                ],
               )
             ],
           ),
@@ -235,8 +256,8 @@ void showDialogWithFields( BuildContext context, Speaker s) async {
           TextButton(
             onPressed: () {
               // Send them to your email maybe?
-              s.id= emailController.text;
-              s.color=color;
+              s.id = emailController.text;
+              s.color = color;
               var message = messageController.text;
               Navigator.pop(context);
             },
@@ -247,4 +268,3 @@ void showDialogWithFields( BuildContext context, Speaker s) async {
     },
   );
 }
-
