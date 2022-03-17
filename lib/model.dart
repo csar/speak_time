@@ -132,11 +132,11 @@ class Model extends ChangeNotifier {
   }
 
   save()  async {
-    var data = "Speaker,Start,Duration\n";
+    var data = "Speaker,Name,Start,Duration\n";
 
     for (var s in icons) {
       for ( var p in s.parts) {
-        data += '${s.id},${DateTime.fromMillisecondsSinceEpoch( p.from).toIso8601String()},${p.duration}\n';
+        data += '${s.id},${s.name},${DateTime.fromMillisecondsSinceEpoch( p.from).toIso8601String()},${p.duration}\n';
       }
     }
 
@@ -164,6 +164,7 @@ Speaker(this.x,this.y);
 int? started;
 
   Color  color = Colors.blue;
+  String name="";
 
 start() {
   if (started!=null) {

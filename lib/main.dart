@@ -198,6 +198,7 @@ void showDialogWithFields(BuildContext context, Speaker s) async {
       emailController.text = s.id;
       var color = s.color;
       var messageController = TextEditingController();
+      messageController.text=s.name;
       return AlertDialog(
         title: Text('Speaker'),
         content: SizedBox(
@@ -208,7 +209,7 @@ void showDialogWithFields(BuildContext context, Speaker s) async {
             children: [
               TextFormField(
                 controller: emailController,
-                maxLength: 2,
+                maxLength: 3,
                 expands: false,
                 decoration: InputDecoration(hintText: 'Initial'),
               ),
@@ -258,7 +259,7 @@ void showDialogWithFields(BuildContext context, Speaker s) async {
               // Send them to your email maybe?
               s.id = emailController.text;
               s.color = color;
-              var message = messageController.text;
+              s.name = messageController.text;
               Navigator.pop(context);
             },
             child: Text('OK'),
