@@ -123,7 +123,7 @@ class MyHomePage extends StatelessWidget {
                                                         FontWeight.bold),
                                               )),
                                               decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
+                                                  shape: (speaker.round) ? BoxShape.circle : BoxShape.rectangle,
                                                   color: speaker.color),
                                             ));
                                         return Positioned(
@@ -193,13 +193,16 @@ const bubbleSize = 60.0;
 void showDialogWithFields(BuildContext context, Speaker s) async {
   return showDialog(
     context: context,
-    builder: (_) {
+    builder: (context) {
+
       var emailController = TextEditingController();
       emailController.text = s.id;
       var color = s.color;
+      var round = s.round;
+
       var messageController = TextEditingController();
       messageController.text=s.name;
-      return AlertDialog(
+      return StatefulBuilder(builder: (context, setState) => AlertDialog(
         title: Text('Speaker'),
         content: SizedBox(
           //height: double.maxFinite,
@@ -217,6 +220,7 @@ void showDialogWithFields(BuildContext context, Speaker s) async {
                 controller: messageController,
                 decoration: InputDecoration(hintText: 'Name'),
               ),
+              SwitchListTile(title:Text("Round"), value: round, onChanged: (v)=> setState(()=>round=v),),
               SizedBox(
                 height: 20,
               ),
@@ -245,7 +249,8 @@ void showDialogWithFields(BuildContext context, Speaker s) async {
                   Colors.blueGrey,
                   // Colors.black,
                 ],
-              )
+              ),
+
             ],
           ),
         ),
@@ -260,12 +265,17 @@ void showDialogWithFields(BuildContext context, Speaker s) async {
               s.id = emailController.text;
               s.color = color;
               s.name = messageController.text;
+              s.round = round;
               Navigator.pop(context);
             },
             child: Text('OK'),
           ),
         ],
+      )
       );
-    },
+
+    }
+
   );
 }
+

@@ -142,7 +142,7 @@ class Model extends ChangeNotifier {
 
 
     var now = DateTime.now().toIso8601String();
-    final name=  'Session_${now.substring(0,20)}.csv';
+    final name=  'Session_${now.substring(0,19)}.csv';
     print("save");
     if (kIsWeb) {
      Writer(name).save(data);
@@ -165,6 +165,7 @@ int? started;
 
   Color  color = Colors.blue;
   String name="";
+  bool round=true;
 
 start() {
   if (started!=null) {
